@@ -1,0 +1,1445 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Little Diary ♡</title>
+
+<style>
+:root {
+    --page-bg: #fce8f0;
+    --panel-bg: #fffafd;
+    --soft-bg: #f5d2e0;
+    --accent: #d98eac;
+    --text: #85516a;
+    --muted: #a8758c;
+    --border: #f1cbd9;
+}
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: #fce8f0;
+    color: #85516a;
+    font-family: Georgia, serif;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+    padding: 25px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 55px;
+}
+
+.logo { font-size: 25px; font-weight: bold; }
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.small-button {
+    background: #f5d2e0;
+    color: #85516a;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.welcome { text-align: center; margin-bottom: 35px; }
+.welcome h1 { font-size: 38px; }
+
+.search-box, .memories, .editor {
+    background: #fffafd;
+    padding: 22px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #85516a;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.card {
+    background: #f5d2e0;
+    padding: 25px;
+    text-align: center;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+.card span {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.entry-button {
+    width: 100%;
+    background: #d98eac;
+    color: white;
+    padding: 18px;
+    border-radius: 18px;
+    font-size: 19px;
+    margin: 12px 0;
+}
+
+.entry-button:hover { background: #c77999; }
+
+.editor { display: none; }
+
+.editor textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 16px;
+    border: 1px solid #edc5d5;
+    border-radius: 12px;
+    resize: vertical;
+    font-family: Georgia, serif;
+    font-size: 16px;
+    color: #85516a;
+    background: white;
+}
+
+.editor select, .editor input[type="text"] {
+    padding: 12px;
+    border: 1px solid #edc5d5;
+    border-radius: 10px;
+    color: #85516a;
+    background: white;
+    font-family: inherit;
+}
+
+.section { margin: 22px 0; }
+
+.back-button, .tool-button {
+    background: #f5d2e0;
+    color: #85516a;
+    padding: 12px 17px;
+    border-radius: 12px;
+    margin: 5px;
+}
+
+.photo-preview img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.saved-entry {
+    background: #fffafd;
+    border: 1px solid #f1cbd9;
+    padding: 18px;
+    margin: 15px 0;
+    border-radius: 15px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.saved-entry img {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 12px;
+    display: block;
+    margin-top: 12px;
+}
+
+.todo-page {
+    display: none;
+    background: #fffafd;
+    border: 1px solid #f1cbd9;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+.todo-form {
+    background: #fce8f0;
+    padding: 16px;
+    border-radius: 14px;
+    margin: 18px 0;
+}
+.todo-form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+.todo-form input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #edc5d5;
+    border-radius: 10px;
+    background: white;
+    color: #85516a;
+    font-family: inherit;
+}
+.todo-item {
+    background: #fffafd;
+    border: 1px solid #f1cbd9;
+    border-radius: 13px;
+    padding: 14px;
+    margin: 12px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+}
+.todo-item input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
+    accent-color: #d98eac;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+.todo-item-content { flex: 1; min-width: 0; }
+.todo-item-title { font-weight: bold; overflow-wrap: anywhere; }
+.todo-meta { font-size: 13px; color: #a8758c; margin-top: 5px; }
+.todo-item.completed .todo-item-title {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+.todo-delete {
+    background: #f5d2e0;
+    color: #85516a;
+    padding: 8px 10px;
+    border-radius: 9px;
+}
+.todo-switch {
+    background: #f5d2e0;
+    color: #85516a;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin: 5px 5px 12px 0;
+}
+
+.entry-actions { margin-top: 12px; }
+
+.entry-actions button {
+    background: #f5d2e0;
+    color: #85516a;
+    padding: 9px 13px;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+#menu {
+    display: none;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+#menu button {
+    display: block;
+    background: transparent;
+    color: #85516a;
+    padding: 12px;
+}
+
+footer {
+    text-align: center;
+    margin: 30px;
+    color: #b47c95;
+}
+
+
+.profile-page {
+    display: none;
+    background: #fffafd;
+    border: 1px solid #f1cbd9;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+.profile-avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f5d2e0;
+    display: block;
+    margin: 12px auto;
+    background: #fff;
+}
+.profile-placeholder {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 4px solid #f5d2e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px auto;
+    background: #fff;
+    font-size: 42px;
+}
+.profile-page label {
+    display: block;
+    margin: 15px 0 6px;
+    font-weight: bold;
+}
+.profile-page input[type="text"],
+.profile-page input[type="date"],
+.profile-page textarea,
+.profile-page select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #edc5d5;
+    border-radius: 10px;
+    color: #85516a;
+    background: white;
+    font-family: inherit;
+    font-size: 15px;
+}
+.profile-page textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+.profile-stat {
+    background: #fce8f0;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+.profile-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+
+#diaryLock {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #fce8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.lock-card {
+    width: 100%;
+    max-width: 390px;
+    background: #fffafd;
+    border: 1px solid #f1cbd9;
+    border-radius: 22px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(133, 81, 106, 0.10);
+}
+.lock-card input {
+    width: 100%;
+    padding: 13px;
+    margin: 7px 0;
+    border: 1px solid #edc5d5;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #85516a;
+    background: white;
+}
+.lock-card button {
+    width: 100%;
+    background: #d98eac;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.lock-note {
+    font-size: 13px;
+    color: #a8758c;
+    line-height: 1.5;
+}
+.password-settings {
+    border-top: 1px solid #f1cbd9;
+    margin-top: 22px;
+    padding-top: 15px;
+}
+.password-settings input {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    border: 1px solid #edc5d5;
+    border-radius: 10px;
+    color: #85516a;
+    background: white;
+    font-family: inherit;
+}
+
+@media(max-width: 500px) {
+    .container { padding: 16px; }
+    .welcome h1 { font-size: 29px; }
+}
+
+/* Calendar layout */
+.calendar-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 15px;
+    margin: 18px 0;
+}
+.calendar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.calendar-top button, .calendar-day {
+    background: var(--soft-bg);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 9px;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+    margin-top: 12px;
+}
+.calendar-weekday {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 7px 0;
+    color: var(--muted);
+}
+.calendar-day {
+    min-height: 54px;
+    padding: 6px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+.calendar-day.empty {
+    background: transparent;
+    pointer-events: none;
+}
+.calendar-day.selected {
+    outline: 2px solid var(--accent);
+    background: var(--panel-bg);
+}
+.calendar-day.today { font-weight: bold; }
+.calendar-day small { font-size: 10px; color: var(--muted); }
+.calendar-day.has-tasks small { font-weight: bold; }
+.calendar-section-title { margin: 18px 0 8px; }
+.todo-page, .todo-form, .todo-item, .saved-entry, .profile-page, .lock-card,
+.search-box, .memories, .editor, .calendar-panel {
+    background-color: var(--panel-bg);
+    border-color: var(--border);
+    color: var(--text);
+}
+.todo-form, .profile-stat { background-color: var(--page-bg); }
+.card, .small-button, .back-button, .tool-button, .todo-switch,
+.todo-delete, .calendar-top button, .calendar-day {
+    background-color: var(--soft-bg);
+    color: var(--text);
+}
+.entry-button, .lock-card button { background-color: var(--accent); }
+body { background-color: var(--page-bg); color: var(--text); }
+footer, .todo-meta, .lock-note { color: var(--muted); }
+
+/* Theme choices */
+body[data-theme="duck-egg"] {
+    --page-bg: #dce9e4; --panel-bg: #f8fbf9; --soft-bg: #c4d9d1;
+    --accent: #789f91; --text: #405e55; --muted: #6f8d82; --border: #c5d9d1;
+}
+body[data-theme="lemon"] {
+    --page-bg: #fff6c9; --panel-bg: #fffdf0; --soft-bg: #f8e9a5;
+    --accent: #d9bd55; --text: #75632b; --muted: #9b8748; --border: #eee0a7;
+}
+body[data-theme="navy-grey"] {
+    --page-bg: #dce1eb; --panel-bg: #f8f9fc; --soft-bg: #c4ccdc;
+    --accent: #7889a8; --text: #46536b; --muted: #71809a; --border: #c6cede;
+}
+body[data-theme="pink"] {
+    --page-bg: #fce8f0; --panel-bg: #fffafd; --soft-bg: #f5d2e0;
+    --accent: #d98eac; --text: #85516a; --muted: #a8758c; --border: #f1cbd9;
+}
+</style>
+</head>
+
+<body>
+
+<div id="diaryLock">
+    <div class="lock-card">
+        <div style="font-size:42px;">🎀</div>
+        <h1 style="color:#b45f83; margin:8px 0;">my little diary ♡</h1>
+        <p id="lockHeading" style="font-size:18px;">Create your diary password</p>
+        <p id="lockSubheading" class="lock-note">Choose a password you'll remember.</p>
+        <form id="lockForm">
+            <input id="lockPassword" type="password" placeholder="Password" autocomplete="new-password" required>
+            <input id="lockConfirm" type="password" placeholder="Confirm password" autocomplete="new-password">
+            <button id="lockSubmit" type="submit">Create password ♡</button>
+        </form>
+        <p id="lockMessage" class="lock-note" role="status"></p>
+        <p class="lock-note">This is a basic browser lock, not encryption. Don't use a password you use elsewhere.</p>
+    </div>
+</div>
+<div class="container">
+
+<header>
+    <div class="logo">my little diary ♡</div>
+    <button class="small-button" onclick="toggleMenu()">☰</button>
+</header>
+
+<div id="menu">
+    <button onclick="goHome()">🏠 Home</button>
+    <button onclick="showAllEntries()">📖 All entries</button>
+    <button onclick="showProfile()">🎀 My Profile ♡</button>
+    <button onclick="showCalendar()">🗓️ My Calendar & Tasks ♡</button>
+</div>
+
+<main id="home">
+
+    <section class="welcome">
+        <h1>what's going on today? ♡</h1>
+        <p id="date"></p>
+        <p id="time"></p>
+    </section>
+
+    <div class="search-box">
+        🔍 <input type="date" id="dateSearch"
+            onchange="searchEntries()">
+    </div>
+
+    <div class="cards">
+        <div class="card" onclick="showAllEntries()">
+            <span>📖</span> My memories
+        </div>
+        <div class="card" onclick="showAllEntries()">
+            <span>🎀</span> My diary
+        </div>
+        <div class="card" onclick="showCalendar()" style="grid-column:1 / -1;">
+            <span>🗓️</span> My Calendar & Tasks
+            <small>plans, little tasks & reminders ♡</small>
+        </div>
+    </div>
+
+    <section class="memories">
+        <h2>today's little moments ♡</h2>
+        <div id="todayEntries">Your memories will live here...</div>
+    </section>
+
+    <button class="entry-button" onclick="openEditor()">
+        ＋ diary entry
+    </button>
+
+</main>
+
+<section id="editor" class="editor">
+
+    <button class="back-button" onclick="goHome()">
+        ← Back home
+    </button>
+
+    <h1>dear diary... ♡</h1>
+    <p id="editorDate"></p>
+
+    <div class="section">
+        <h3>How are you feeling today? ♡</h3>
+        <select id="mood">
+            <option value="🥰 Happy">🥰 Happy</option>
+            <option value="😊 Good">😊 Good</option>
+            <option value="😐 Okay">😐 Okay</option>
+            <option value="🥺 Sad">🥺 Sad</option>
+            <option value="😡 Angry">😡 Angry</option>
+            <option value="😴 Tired">😴 Tired</option>
+            <option value="🤩 Excited">🤩 Excited</option>
+            <option value="💗 Grateful">💗 Grateful</option>
+        </select>
+    </div>
+
+    <div class="section">
+        <h3>Write your thoughts ✍️</h3>
+        <textarea id="writing"
+            placeholder="Dear diary, today..."></textarea>
+    </div>
+
+    <div class="section">
+        <h3>Add a picture 📸</h3>
+        <input type="file" id="photo" accept="image/*">
+        <div class="photo-preview" id="photoPreview"></div>
+    </div>
+
+    <div class="section">
+        <h3>Add a little decoration 🎀</h3>
+        <div>
+            <button class="tool-button" onclick="addSticker('🎀')">🎀</button>
+            <button class="tool-button" onclick="addSticker('♡')">♡</button>
+            <button class="tool-button" onclick="addSticker('🌷')">🌷</button>
+            <button class="tool-button" onclick="addSticker('✨')">✨</button>
+            <button class="tool-button" onclick="addSticker('🧸')">🧸</button>
+        </div>
+    </div>
+
+    <button class="entry-button" onclick="saveEntry()">
+        ♡ Save my entry ♡
+    </button>
+
+</section>
+
+<section id="allEntries" style="display:none">
+    <button class="back-button" onclick="goHome()">← Home</button>
+    <h1>my memories ♡</h1>
+    <input type="text" id="textSearch"
+        placeholder="Search your entries..."
+        oninput="showAllEntries()">
+    <div id="entryList"></div>
+</section>
+
+
+<section id="calendarPage" class="todo-page">
+    <button class="back-button" onclick="goHome()">← Home</button>
+    <h1>My Calendar ♡</h1>
+    <p>Your plans, tasks and little reminders, together in one place. ✨</p>
+
+    <div class="calendar-panel">
+        <div class="calendar-top">
+            <button onclick="changeCalendarMonth(-1)" aria-label="Previous month">‹</button>
+            <h2 id="calendarMonthTitle" style="margin:0;">Month Year</h2>
+            <button onclick="changeCalendarMonth(1)" aria-label="Next month">›</button>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+
+    <div class="calendar-panel">
+        <h2 id="selectedDateTitle" class="calendar-section-title">Tasks for today ♡</h2>
+        <div id="calendarDayTasks"></div>
+        <div class="todo-form">
+            <h3>＋ Add a task for this day</h3>
+            <label for="todoTitle">What do you need to do?</label>
+            <input type="text" id="todoTitle" placeholder="e.g. Finish my homework">
+            <label for="todoDate">Due date</label>
+            <input type="date" id="todoDate">
+            <label for="todoTime">Reminder time (optional)</label>
+            <input type="time" id="todoTime">
+            <button class="entry-button" onclick="addTodoTask()">♡ Add to my calendar ♡</button>
+        </div>
+        <button class="todo-switch" id="completedToggle" onclick="toggleCompletedTasks()">✓ Tasks that are done ♡</button>
+        <div id="completedTodoArea" style="display:none;">
+            <h2>All done! 🎀</h2>
+            <div id="completedTodoList"></div>
+            <button class="todo-switch" onclick="hideCompletedTasks()">← Back to calendar</button>
+        </div>
+    </div>
+</section>
+
+<section id="profile" class="profile-page">
+    <button class="back-button" onclick="goHome()">← Home</button>
+    <h1 style="text-align:center;">My Profile ♡</h1>
+    <div id="profileAvatarArea">
+        <div class="profile-placeholder">🎀</div>
+    </div>
+    <div style="text-align:center;">
+        <label for="profilePicture" style="display:inline-block; cursor:pointer; color:#b45f83; background:#f5d2e0; padding:10px 15px; border-radius:12px;">
+            📸 Choose profile picture
+        </label>
+        <input type="file" id="profilePicture" accept="image/*" style="display:none;">
+    </div>
+
+    <label for="profileName">Username ♡</label>
+    <input type="text" id="profileName" placeholder="What should we call you?">
+
+    <label for="profileBirthday">Birthday 🎂</label>
+    <input type="date" id="profileBirthday">
+
+    <label for="profileBio">About me ✍️</label>
+    <textarea id="profileBio" placeholder="A little something about me..."></textarea>
+
+    <label for="profileColour">Favourite colour 🎨</label>
+    <select id="profileColour">
+        <option value="Pink">Pink 💗</option>
+        <option value="Lavender">Lavender 💜</option>
+        <option value="Baby blue">Baby blue 🩵</option>
+        <option value="Sage green">Sage green 🌿</option>
+        <option value="Yellow">Yellow 💛</option>
+        <option value="Other">Other 🌈</option>
+    </select>
+
+    <div class="profile-stats">
+        <div class="profile-stat">
+            <div style="font-size:25px;">📖</div>
+            <strong id="profileEntryCount">0</strong>
+            <div>diary entries</div>
+        </div>
+        <div class="profile-stat">
+            <div style="font-size:25px;">♡</div>
+            <strong id="profileMemberSince">Just started!</strong>
+            <div>your diary</div>
+        </div>
+    </div>
+
+
+
+    <div class="password-settings">
+        <h3>🎨 Diary colours</h3>
+        <p class="lock-note">Choose the colour mood for your diary. Your favourite pink is still here! ♡</p>
+        <label for="diaryTheme">Choose a theme</label>
+        <select id="diaryTheme" onchange="applyTheme(this.value)">
+            <option value="pink">Original Pink 💗</option>
+            <option value="duck-egg">Duck Egg Blue 🩵</option>
+            <option value="lemon">Lemon Yellow 🍋</option>
+            <option value="navy-grey">Navy Greyish Blue 🌌</option>
+        </select>
+    </div>
+
+    <div class="password-settings">
+        <h3>🔒 Diary password</h3>
+        <p class="lock-note">Change the password you use whenever you open your diary.</p>
+        <input type="password" id="newProfilePassword" placeholder="New password" autocomplete="new-password">
+        <input type="password" id="confirmProfilePassword" placeholder="Confirm new password" autocomplete="new-password">
+        <button class="tool-button" onclick="changeDiaryPassword()">♡ Change password ♡</button>
+    </div>
+
+    <button class="entry-button" onclick="saveProfile()">♡ Save my profile ♡</button>
+</section>
+
+<footer>made with love ♡</footer>
+
+</div>
+
+<script>
+
+let entries = JSON.parse(
+    localStorage.getItem("myDiaryEntries") || "[]"
+);
+
+let selectedPhoto = "";
+let editingId = null;
+let profilePictureData = localStorage.getItem("myDiaryProfilePicture") || "";
+let todoTasks = JSON.parse(localStorage.getItem("myDiaryTasks") || "[]");
+let selectedCalendarDate = localDateString(new Date());
+let calendarMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let showingCompletedTasks = false;
+
+function localDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+
+
+// DIARY PASSWORD LOCK
+const PASSWORD_SALT_KEY = "myDiaryPasswordSalt_github_v1";
+const PASSWORD_HASH_KEY = "myDiaryPasswordHash_github_v1";
+let lockIsSetup = false;
+
+function bytesToHex(bytes) {
+    return Array.from(bytes).map(byte => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function hexToBytes(hex) {
+    return new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+}
+
+async function makePasswordHash(password, saltHex) {
+    if (!window.crypto || !crypto.subtle) {
+        throw new Error("Secure password hashing is unavailable in this browser context.");
+    }
+    const encoder = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+        "raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]
+    );
+    const bits = await crypto.subtle.deriveBits(
+        { name: "PBKDF2", salt: hexToBytes(saltHex), iterations: 150000, hash: "SHA-256" },
+        keyMaterial,
+        256
+    );
+    return bytesToHex(new Uint8Array(bits));
+}
+
+function preparePasswordLock() {
+    lockIsSetup = Boolean(localStorage.getItem(PASSWORD_HASH_KEY));
+    document.getElementById("lockHeading").textContent =
+        lockIsSetup ? "Welcome back ♡" : "Create your diary password";
+    document.getElementById("lockSubheading").textContent =
+        lockIsSetup ? "Enter your password to unlock your diary." : "Choose a password you'll remember.";
+    document.getElementById("lockSubmit").textContent =
+        lockIsSetup ? "Unlock my diary ♡" : "Create password ♡";
+    document.getElementById("lockConfirm").style.display = lockIsSetup ? "none" : "block";
+    document.getElementById("lockConfirm").required = !lockIsSetup;
+    document.getElementById("lockPassword").autocomplete = lockIsSetup ? "current-password" : "new-password";
+}
+
+document.getElementById("lockForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const password = document.getElementById("lockPassword").value;
+    const confirm = document.getElementById("lockConfirm").value;
+    const message = document.getElementById("lockMessage");
+    const button = document.getElementById("lockSubmit");
+    message.textContent = "";
+    button.disabled = true;
+
+    try {
+        if (!lockIsSetup) {
+            if (password.length < 6) {
+                message.textContent = "Please choose at least 6 characters.";
+                return;
+            }
+            if (password !== confirm) {
+                message.textContent = "Those passwords don't match. Try again!";
+                return;
+            }
+            const salt = bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
+            const hash = await makePasswordHash(password, salt);
+            localStorage.setItem(PASSWORD_SALT_KEY, salt);
+            localStorage.setItem(PASSWORD_HASH_KEY, hash);
+            lockIsSetup = true;
+        } else {
+            const salt = localStorage.getItem(PASSWORD_SALT_KEY);
+            const savedHash = localStorage.getItem(PASSWORD_HASH_KEY);
+            const enteredHash = await makePasswordHash(password, salt);
+            if (enteredHash !== savedHash) {
+                message.textContent = "That password isn't right. Try again ♡";
+                return;
+            }
+        }
+        document.getElementById("diaryLock").style.display = "none";
+        document.getElementById("lockPassword").value = "";
+        document.getElementById("lockConfirm").value = "";
+    } catch (error) {
+        message.textContent = "Password setup isn't supported here. Try opening the diary in Microsoft Edge.";
+    } finally {
+        button.disabled = false;
+    }
+});
+
+async function changeDiaryPassword() {
+    const password = document.getElementById("newProfilePassword").value;
+    const confirm = document.getElementById("confirmProfilePassword").value;
+    if (password.length < 6) {
+        alert("Please choose a password with at least 6 characters.");
+        return;
+    }
+    if (password !== confirm) {
+        alert("Those passwords don't match. Try again!");
+        return;
+    }
+    try {
+        const salt = bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
+        const hash = await makePasswordHash(password, salt);
+        localStorage.setItem(PASSWORD_SALT_KEY, salt);
+        localStorage.setItem(PASSWORD_HASH_KEY, hash);
+        document.getElementById("newProfilePassword").value = "";
+        document.getElementById("confirmProfilePassword").value = "";
+        alert("Your diary password has been changed! ♡");
+    } catch (error) {
+        alert("Couldn't change the password in this browser context. Please try again in Edge.");
+    }
+}
+
+preparePasswordLock();
+
+// DIARY COLOUR THEMES
+function applyTheme(theme) {
+    const allowed = ["pink", "duck-egg", "lemon", "navy-grey"];
+    const chosen = allowed.includes(theme) ? theme : "pink";
+    document.body.setAttribute("data-theme", chosen);
+    localStorage.setItem("myDiaryTheme", chosen);
+    const selector = document.getElementById("diaryTheme");
+    if (selector) selector.value = chosen;
+}
+
+applyTheme(localStorage.getItem("myDiaryTheme") || "pink");
+
+// PROFILE
+function showProfile() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("editor").style.display = "none";
+    document.getElementById("allEntries").style.display = "none";
+    document.getElementById("calendarPage").style.display = "none";
+    document.getElementById("profile").style.display = "block";
+    document.getElementById("menu").style.display = "none";
+
+    let saved = JSON.parse(localStorage.getItem("myDiaryProfile") || "{}");
+    document.getElementById("profileName").value = saved.name || "";
+    document.getElementById("profileBirthday").value = saved.birthday || "";
+    document.getElementById("profileBio").value = saved.bio || "";
+    document.getElementById("profileColour").value = saved.colour || "Pink";
+    document.getElementById("diaryTheme").value = localStorage.getItem("myDiaryTheme") || "pink";
+    showProfilePicture();
+    updateProfileStats();
+}
+
+function saveProfile() {
+    let profile = {
+        name: document.getElementById("profileName").value.trim(),
+        birthday: document.getElementById("profileBirthday").value,
+        bio: document.getElementById("profileBio").value.trim(),
+        colour: document.getElementById("profileColour").value
+    };
+    localStorage.setItem("myDiaryProfile", JSON.stringify(profile));
+    if (profilePictureData) {
+        localStorage.setItem("myDiaryProfilePicture", profilePictureData);
+    } else {
+        localStorage.removeItem("myDiaryProfilePicture");
+    }
+    alert("Your profile has been saved! ♡");
+    updateProfileStats();
+}
+
+function showProfilePicture() {
+    let area = document.getElementById("profileAvatarArea");
+    area.innerHTML = "";
+    if (profilePictureData) {
+        let img = document.createElement("img");
+        img.src = profilePictureData;
+        img.className = "profile-avatar";
+        img.alt = "Your profile picture";
+        area.appendChild(img);
+    } else {
+        let placeholder = document.createElement("div");
+        placeholder.className = "profile-placeholder";
+        placeholder.textContent = "🎀";
+        area.appendChild(placeholder);
+    }
+}
+
+document.getElementById("profilePicture").addEventListener("change", function() {
+    let file = this.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+        alert("Please choose an image!");
+        this.value = "";
+        return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Please choose a picture smaller than 5 MB.");
+        this.value = "";
+        return;
+    }
+    let reader = new FileReader();
+    reader.onload = function(event) {
+        profilePictureData = event.target.result;
+        showProfilePicture();
+    };
+    reader.readAsDataURL(file);
+});
+
+function updateProfileStats() {
+    document.getElementById("profileEntryCount").textContent = entries.length;
+    let firstSaved = localStorage.getItem("myDiaryFirstSaved");
+    if (entries.length && !firstSaved) {
+        firstSaved = new Date().toLocaleDateString();
+        localStorage.setItem("myDiaryFirstSaved", firstSaved);
+    }
+    document.getElementById("profileMemberSince").textContent =
+        firstSaved || "Just started!";
+}
+
+// CLOCK
+
+function updateClock() {
+    let now = new Date();
+
+    document.getElementById("date").textContent =
+        now.toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+    document.getElementById("time").textContent =
+        now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+// NAVIGATION
+
+function toggleMenu() {
+    let menu = document.getElementById("menu");
+    menu.style.display =
+        menu.style.display === "block" ? "none" : "block";
+}
+
+function openEditor(id = null) {
+    editingId = id;
+
+    document.getElementById("home").style.display = "none";
+    document.getElementById("allEntries").style.display = "none";
+    document.getElementById("calendarPage").style.display = "none";
+    document.getElementById("profile").style.display = "none";
+    document.getElementById("editor").style.display = "block";
+
+    let entry = entries.find(e => e.id === id);
+
+    document.getElementById("writing").value = entry ? entry.text : "";
+    document.getElementById("mood").value = entry ? entry.mood : "🥰 Happy";
+    selectedPhoto = entry ? entry.photo : "";
+
+    document.getElementById("editorDate").textContent =
+        entry ? entry.date : new Date().toLocaleDateString();
+
+    document.getElementById("photo").value = "";
+    showPhoto();
+}
+
+function goHome() {
+    document.getElementById("editor").style.display = "none";
+    document.getElementById("allEntries").style.display = "none";
+    document.getElementById("calendarPage").style.display = "none";
+    document.getElementById("profile").style.display = "none";
+    document.getElementById("home").style.display = "block";
+    document.getElementById("menu").style.display = "none";
+    showToday();
+}
+
+
+// CALENDAR & TO-DO TASKS
+function showCalendar() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("editor").style.display = "none";
+    document.getElementById("allEntries").style.display = "none";
+    document.getElementById("profile").style.display = "none";
+    document.getElementById("calendarPage").style.display = "block";
+    document.getElementById("menu").style.display = "none";
+    showingCompletedTasks = false;
+    document.getElementById("completedTodoArea").style.display = "none";
+    document.getElementById("calendarDayTasks").style.display = "block";
+    document.getElementById("completedToggle").style.display = "inline-block";
+    document.getElementById("todoDate").value = selectedCalendarDate;
+    renderCalendar();
+    renderCalendarTasks();
+}
+
+function changeCalendarMonth(amount) {
+    calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + amount, 1);
+    renderCalendar();
+}
+
+function selectCalendarDate(dateString) {
+    selectedCalendarDate = dateString;
+    document.getElementById("todoDate").value = dateString;
+    showingCompletedTasks = false;
+    document.getElementById("completedTodoArea").style.display = "none";
+    document.getElementById("calendarDayTasks").style.display = "block";
+    document.getElementById("completedToggle").style.display = "inline-block";
+    renderCalendar();
+    renderCalendarTasks();
+}
+
+function renderCalendar() {
+    const grid = document.getElementById("calendarGrid");
+    grid.innerHTML = "";
+    document.getElementById("calendarMonthTitle").textContent =
+        calendarMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+
+    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+        const label = document.createElement("div");
+        label.className = "calendar-weekday";
+        label.textContent = day;
+        grid.appendChild(label);
+    });
+
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const firstWeekday = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let blank = 0; blank < firstWeekday; blank++) {
+        const empty = document.createElement("div");
+        empty.className = "calendar-day empty";
+        grid.appendChild(empty);
+    }
+
+    const today = localDateString(new Date());
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateString = localDateString(new Date(year, month, day));
+        const tasksForDate = todoTasks.filter(task => task.dueDate === dateString && !task.done);
+        const button = document.createElement("button");
+        button.className = "calendar-day";
+        if (dateString === selectedCalendarDate) button.classList.add("selected");
+        if (dateString === today) button.classList.add("today");
+        if (tasksForDate.length) button.classList.add("has-tasks");
+        const number = document.createElement("span");
+        number.textContent = day;
+        button.appendChild(number);
+        if (tasksForDate.length) {
+            const count = document.createElement("small");
+            count.textContent = "• " + tasksForDate.length + " task" + (tasksForDate.length === 1 ? "" : "s");
+            button.appendChild(count);
+        }
+        button.addEventListener("click", () => selectCalendarDate(dateString));
+        grid.appendChild(button);
+    }
+}
+
+function saveTodoTasks() {
+    try {
+        localStorage.setItem("myDiaryTasks", JSON.stringify(todoTasks));
+    } catch (error) {
+        alert("Couldn't save that task. Your browser storage may be full.");
+    }
+}
+
+function addTodoTask() {
+    const titleInput = document.getElementById("todoTitle");
+    const title = titleInput.value.trim();
+    const dueDate = document.getElementById("todoDate").value || selectedCalendarDate;
+    if (!title) {
+        alert("Write down your task first! ♡");
+        titleInput.focus();
+        return;
+    }
+
+    todoTasks.unshift({
+        id: Date.now(),
+        title: title,
+        dueDate: dueDate,
+        dueTime: document.getElementById("todoTime").value,
+        done: false,
+        reminderShownFor: ""
+    });
+
+    saveTodoTasks();
+    titleInput.value = "";
+    document.getElementById("todoTime").value = "";
+    selectedCalendarDate = dueDate;
+    const parsed = new Date(dueDate + "T00:00:00");
+    calendarMonth = new Date(parsed.getFullYear(), parsed.getMonth(), 1);
+    renderCalendar();
+    renderCalendarTasks();
+}
+
+function renderCalendarTasks() {
+    const area = document.getElementById("calendarDayTasks");
+    const completedArea = document.getElementById("completedTodoList");
+    area.innerHTML = "";
+    completedArea.innerHTML = "";
+
+    const dateLabel = new Date(selectedCalendarDate + "T00:00:00")
+        .toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    document.getElementById("selectedDateTitle").textContent = "Tasks for " + dateLabel + " ♡";
+
+    const active = todoTasks.filter(task => !task.done && task.dueDate === selectedCalendarDate);
+    const completed = todoTasks.filter(task => task.done);
+
+    if (!active.length) {
+        area.textContent = "No tasks planned for this day. A little free time! ♡";
+    } else {
+        active.forEach(task => area.appendChild(makeTodoCard(task)));
+    }
+
+    if (!completed.length) {
+        completedArea.textContent = "Your completed tasks will appear here. ♡";
+    } else {
+        completed.forEach(task => completedArea.appendChild(makeTodoCard(task)));
+    }
+}
+
+function makeTodoCard(task) {
+    const card = document.createElement("div");
+    card.className = "todo-item" + (task.done ? " completed" : "");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = Boolean(task.done);
+    checkbox.setAttribute("aria-label", "Mark task as completed");
+    checkbox.addEventListener("change", () => toggleTodoTask(task.id));
+
+    const content = document.createElement("div");
+    content.className = "todo-item-content";
+    const title = document.createElement("div");
+    title.className = "todo-item-title";
+    title.textContent = task.title;
+    content.appendChild(title);
+
+    const meta = document.createElement("div");
+    meta.className = "todo-meta";
+    const dueText = task.dueDate
+        ? new Date(task.dueDate + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
+        : "No date";
+    meta.textContent = "Due: " + dueText + (task.dueTime ? " · Reminder: " + task.dueTime : "");
+    if (!task.done && task.dueDate && task.dueDate < localDateString(new Date())) {
+        meta.textContent += " · Overdue";
+    }
+    content.appendChild(meta);
+
+    const remove = document.createElement("button");
+    remove.className = "todo-delete";
+    remove.textContent = "🗑";
+    remove.title = "Delete task";
+    remove.addEventListener("click", () => deleteTodoTask(task.id));
+
+    card.append(checkbox, content, remove);
+    return card;
+}
+
+function toggleTodoTask(id) {
+    const task = todoTasks.find(item => item.id === id);
+    if (!task) return;
+    task.done = !task.done;
+    saveTodoTasks();
+    renderCalendar();
+    renderCalendarTasks();
+}
+
+function deleteTodoTask(id) {
+    if (!confirm("Delete this task?")) return;
+    todoTasks = todoTasks.filter(task => task.id !== id);
+    saveTodoTasks();
+    renderCalendar();
+    renderCalendarTasks();
+}
+
+function toggleCompletedTasks() {
+    showingCompletedTasks = true;
+    document.getElementById("calendarDayTasks").style.display = "none";
+    document.getElementById("completedTodoArea").style.display = "block";
+    document.getElementById("completedToggle").style.display = "none";
+    renderCalendarTasks();
+}
+
+function hideCompletedTasks() {
+    showingCompletedTasks = false;
+    document.getElementById("completedTodoArea").style.display = "none";
+    document.getElementById("calendarDayTasks").style.display = "block";
+    document.getElementById("completedToggle").style.display = "inline-block";
+    renderCalendarTasks();
+}
+
+function checkTodoReminders() {
+    const now = new Date();
+    const today = localDateString(now);
+    const currentTime = now.toTimeString().slice(0, 5);
+    let changed = false;
+
+    todoTasks.forEach(task => {
+        if (task.done || !task.dueDate || !task.dueTime) return;
+        const reminderKey = task.dueDate + "T" + task.dueTime;
+        if (task.dueDate === today && task.dueTime <= currentTime &&
+            task.reminderShownFor !== reminderKey) {
+            alert("♡ Little reminder ♡\n\n" + task.title);
+            task.reminderShownFor = reminderKey;
+            changed = true;
+        }
+    });
+    if (changed) saveTodoTasks();
+}
+
+setInterval(checkTodoReminders, 15000);
+setTimeout(checkTodoReminders, 1200);
+
+// STICKERS
+
+function addSticker(sticker) {
+    let writing = document.getElementById("writing");
+    let start = writing.selectionStart;
+    let end = writing.selectionEnd;
+
+    writing.value =
+        writing.value.substring(0, start) +
+        sticker +
+        writing.value.substring(end);
+
+    writing.focus();
+}
+
+// PHOTOS
+
+document.getElementById("photo").addEventListener("change", function() {
+    let file = this.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please choose an image!");
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Please choose a picture smaller than 5 MB.");
+        this.value = "";
+        return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = function(event) {
+        selectedPhoto = event.target.result;
+        showPhoto();
+    };
+
+    reader.readAsDataURL(file);
+});
+
+function showPhoto() {
+    let preview = document.getElementById("photoPreview");
+    preview.innerHTML = "";
+
+    if (selectedPhoto) {
+        let img = document.createElement("img");
+        img.src = selectedPhoto;
+        preview.appendChild(img);
+    }
+}
+
+// SAVE ENTRIES
+
+function saveEntry() {
+    let text = document.getElementById("writing").value.trim();
+
+    if (!text && !selectedPhoto) {
+        alert("Write something or add a picture first! ♡");
+        return;
+    }
+
+    let entry = {
+        id: editingId || Date.now(),
+        date: editingId
+            ? entries.find(e => e.id === editingId).date
+            : new Date().toLocaleString(),
+        day: editingId
+            ? entries.find(e => e.id === editingId).day
+            : new Date().toISOString().slice(0, 10),
+        text: text,
+        mood: document.getElementById("mood").value,
+        photo: selectedPhoto
+    };
+
+    if (editingId) {
+        entries = entries.map(e => e.id === editingId ? entry : e);
+    } else {
+        entries.unshift(entry);
+    }
+
+    try {
+        localStorage.setItem("myDiaryEntries", JSON.stringify(entries));
+    } catch (error) {
+        alert("Storage is full. Try removing a photo or an old entry.");
+        return;
+    }
+
+    alert("Your memory has been saved! ♡");
+    goHome();
+}
+
+// DISPLAY ENTRIES
+
+function showToday() {
+    let today = new Date().toISOString().slice(0, 10);
+
+    let todays = entries.filter(e => e.day === today);
+    let area = document.getElementById("todayEntries");
+    area.innerHTML = "";
+
+    if (!todays.length) {
+        area.textContent = "Your memories will live here...";
+        return;
+    }
+
+    todays.forEach(e => {
+        let p = document.createElement("p");
+        p.textContent = e.mood + " — " + e.text;
+        area.appendChild(p);
+    });
+}
+
+function showAllEntries() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("editor").style.display = "none";
+    document.getElementById("calendarPage").style.display = "none";
+    document.getElementById("profile").style.display = "none";
+    document.getElementById("allEntries").style.display = "block";
+
+    let query = document.getElementById("textSearch").value.toLowerCase();
+    let list = document.getElementById("entryList");
+    list.innerHTML = "";
+
+    entries.filter(e =>
+        e.text.toLowerCase().includes(query) ||
+        e.mood.toLowerCase().includes(query) ||
+        e.day.includes(query)
+    ).forEach(e => {
+        let card = document.createElement("div");
+        card.className = "saved-entry";
+
+        let heading = document.createElement("strong");
+        heading.textContent = e.date + " · " + e.mood;
+
+        let content = document.createElement("p");
+        content.textContent = e.text;
+
+        card.append(heading, content);
+
+        if (e.photo) {
+            let img = document.createElement("img");
+            img.src = e.photo;
+            card.appendChild(img);
+        }
+
+        let actions = document.createElement("div");
+        actions.className = "entry-actions";
+
+        let edit = document.createElement("button");
+        edit.textContent = "✏️ Edit";
+        edit.onclick = () => openEditor(e.id);
+
+        let remove = document.createElement("button");
+        remove.textContent = "🗑️ Delete";
+        remove.onclick = () => deleteEntry(e.id);
+
+        actions.append(edit, remove);
+        card.appendChild(actions);
+        list.appendChild(card);
+    });
+}
+
+function deleteEntry(id) {
+    if (!confirm("Are you sure you want to delete this memory?")) return;
+
+    entries = entries.filter(e => e.id !== id);
+    localStorage.setItem("myDiaryEntries", JSON.stringify(entries));
+
+    showAllEntries();
+    showToday();
+}
+
+function searchEntries() {
+    let day = document.getElementById("dateSearch").value;
+
+    if (!day) return;
+
+    document.getElementById("textSearch").value = day;
+    showAllEntries();
+}
+
+showToday();
+
+</script>
+</body>
+</html>
